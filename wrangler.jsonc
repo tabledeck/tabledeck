@@ -1,0 +1,30 @@
+{
+  "name": "tabledeck",
+  "compatibility_date": "2026-03-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./workers/app.ts",
+  "assets": {
+    "directory": "./build/client"
+  },
+  "routes": [
+    {
+      "pattern": "tabledeck.us/*",
+      "zone_name": "tabledeck.us"
+    },
+    {
+      "pattern": "www.tabledeck.us/*",
+      "zone_name": "tabledeck.us"
+    }
+  ],
+  "vars": {
+    "ENVIRONMENT": "production"
+  },
+  "d1_databases": [
+    {
+      "binding": "D1_DATABASE",
+      "database_name": "tabledeck-auth",
+      "database_id": "9e3645c4-fc3f-44df-8477-64a47d0637de",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
