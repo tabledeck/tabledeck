@@ -1,6 +1,12 @@
 import { redirect } from "react-router";
 import type { Route } from "./+types/profile";
 import { getOptionalUserFromContext } from "~/domain/utils/global-context.server";
+import { CardFanIcon } from "~/components/crests/CardFanIcon";
+import { SkullKingCrest } from "~/components/crests/SkullKingCrest";
+import { KingsCribbageCrest } from "~/components/crests/KingsCribbageCrest";
+import { BattleshipCrest } from "~/components/crests/BattleshipCrest";
+import { GameOfThingsCrest } from "~/components/crests/GameOfThingsCrest";
+import { ScoreboardCrest } from "~/components/crests/ScoreboardCrest";
 
 export function meta() {
   return [{ title: "Profile — Tabledeck" }];
@@ -12,52 +18,190 @@ export async function loader({ context }: Route.LoaderArgs) {
   return { user: { name: user.name, email: user.email } };
 }
 
+const GAMES = [
+  {
+    id: "skull-king",
+    title: "Skull King",
+    description: "Real-time trick-taking for 2–8 players",
+    href: "https://skull.tabledeck.us",
+  },
+  {
+    id: "kings-cribbage",
+    title: "King's Cribbage",
+    description: "Classic cribbage, played online with friends",
+    href: "https://kingscrib.tabledeck.us",
+  },
+  {
+    id: "battleship",
+    title: "Battleship",
+    description: "Naval strategy — sink the fleet",
+    href: "https://battleship.tabledeck.us",
+  },
+  {
+    id: "game-of-things",
+    title: "Game of Things",
+    description: "The party game of outrageous answers",
+    href: "https://things.tabledeck.us",
+  },
+  {
+    id: "scoreboard",
+    title: "Scoreboard",
+    description: "Live scores for any game",
+    href: "https://score.tabledeck.us",
+  },
+] as const;
+
+function GameCrest({ id, size }: { id: string; size: number }) {
+  if (id === "skull-king") return <SkullKingCrest size={size} />;
+  if (id === "kings-cribbage") return <KingsCribbageCrest size={size} />;
+  if (id === "battleship") return <BattleshipCrest size={size} />;
+  if (id === "game-of-things") return <GameOfThingsCrest size={size} />;
+  if (id === "scoreboard") return <ScoreboardCrest size={size} />;
+  return null;
+}
+
 export default function Profile({ loaderData }: Route.ComponentProps) {
   const { user } = loaderData;
+  const displayName = user.name || user.email;
 
   return (
-    <div className="min-h-screen bg-gray-950 p-4">
-      <div className="max-w-lg mx-auto">
-        <div className="flex items-center justify-between mb-6 pt-4">
-          <a href="/" className="text-gray-400 hover:text-white text-sm">
-            ← Home
-          </a>
-          <a href="/logout" className="text-gray-500 hover:text-gray-300 text-sm">
-            Logout
-          </a>
-        </div>
+    <div className="td-surface flex flex-col items-center justify-center p-4 py-12">
+      {/* Back link */}
+      <div className="w-full max-w-md mb-5">
+        <a
+          href="/"
+          className="font-serif"
+          style={{
+            fontVariant: "small-caps",
+            fontSize: "12px",
+            letterSpacing: "0.22em",
+            color: "rgba(244,233,208,0.45)",
+            textDecoration: "none",
+          }}
+        >
+          &larr; Home
+        </a>
+      </div>
 
-        <div className="text-center mb-10">
-          <div className="text-5xl mb-3">🃏</div>
-          <h1 className="text-2xl font-bold text-white">
-            {user.name || user.email}
+      {/* Parchment profile card */}
+      <div className="td-auth-card" style={{ maxWidth: "460px" }}>
+        {/* Header */}
+        <div className="flex flex-col items-center gap-2 mb-1">
+          <CardFanIcon size={44} />
+          <h1
+            className="font-serif font-semibold"
+            style={{
+              fontSize: "26px",
+              fontStyle: "italic",
+              color: "#1a1612",
+              letterSpacing: "0.01em",
+            }}
+          >
+            {displayName}
           </h1>
-          <p className="text-gray-400 text-sm">{user.email}</p>
+          {user.name && (
+            <p
+              className="font-mono"
+              style={{ fontSize: "12px", color: "rgba(26,22,18,0.55)" }}
+            >
+              {user.email}
+            </p>
+          )}
         </div>
 
-        <h2 className="text-white font-semibold mb-4">Your Games</h2>
-        <div className="space-y-3">
+        <hr className="td-gold-rule" />
+
+        {/* Games section */}
+        <p
+          className="font-serif mb-3"
+          style={{
+            fontVariant: "small-caps",
+            fontSize: "11.5px",
+            letterSpacing: "0.3em",
+            color: "rgba(26,22,18,0.5)",
+          }}
+        >
+          Your Games
+        </p>
+
+        <div className="flex flex-col gap-2">
+          {GAMES.map((game) => (
+            <a
+              key={game.id}
+              href={game.href}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                padding: "10px 12px",
+                borderRadius: "6px",
+                background: "rgba(26,22,18,0.04)",
+                border: "1px solid rgba(26,22,18,0.1)",
+                textDecoration: "none",
+                transition: "background 0.15s ease, border-color 0.15s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(201,162,74,0.08)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,162,74,0.3)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "rgba(26,22,18,0.04)";
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(26,22,18,0.1)";
+              }}
+            >
+              <div style={{ flexShrink: 0 }}>
+                <GameCrest id={game.id} size={28} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p
+                  className="font-serif font-semibold"
+                  style={{ fontSize: "14px", color: "#1a1612", fontStyle: "italic" }}
+                >
+                  {game.title}
+                </p>
+                <p
+                  className="font-sans"
+                  style={{ fontSize: "11.5px", color: "rgba(26,22,18,0.55)" }}
+                >
+                  {game.description}
+                </p>
+              </div>
+              <span
+                className="font-sans"
+                style={{ fontSize: "11px", color: "#8b6a1e", flexShrink: 0 }}
+              >
+                Play &rarr;
+              </span>
+            </a>
+          ))}
+        </div>
+
+        <hr className="td-gold-rule" />
+
+        {/* Sign out */}
+        <div className="text-center">
           <a
-            href="https://skull.tabledeck.us"
-            className="flex items-center gap-4 bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-gray-600 transition-colors"
+            href="/logout"
+            className="font-serif"
+            style={{
+              fontVariant: "small-caps",
+              fontSize: "12px",
+              letterSpacing: "0.22em",
+              color: "rgba(26,22,18,0.45)",
+              textDecoration: "none",
+              borderBottom: "1px dashed rgba(26,22,18,0.25)",
+              paddingBottom: "1px",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.color = "#6b1a21";
+              (e.currentTarget as HTMLAnchorElement).style.borderBottomColor = "#6b1a21";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.color = "rgba(26,22,18,0.45)";
+              (e.currentTarget as HTMLAnchorElement).style.borderBottomColor = "rgba(26,22,18,0.25)";
+            }}
           >
-            <span className="text-3xl">💀</span>
-            <div>
-              <p className="text-white font-medium">Skull King</p>
-              <p className="text-gray-400 text-sm">Real-time trick-taking for 2–8 players</p>
-            </div>
-            <span className="ml-auto text-gray-500 text-sm">Play →</span>
-          </a>
-          <a
-            href="https://kingscrib.tabledeck.us"
-            className="flex items-center gap-4 bg-gray-900 rounded-xl p-4 border border-gray-800 hover:border-gray-600 transition-colors"
-          >
-            <span className="text-3xl">♠️</span>
-            <div>
-              <p className="text-white font-medium">Kings Cribbage</p>
-              <p className="text-gray-400 text-sm">Classic cribbage, online</p>
-            </div>
-            <span className="ml-auto text-gray-500 text-sm">Play →</span>
+            Sign Out
           </a>
         </div>
       </div>

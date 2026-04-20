@@ -3,6 +3,8 @@ import type { Route } from "./+types/login";
 import { getOptionalUserFromContext } from "~/domain/utils/global-context.server";
 import { useState } from "react";
 import { signIn } from "~/lib/auth-client";
+import { BtnPrimary } from "~/components/tabledeck/BtnPrimary";
+import { CardFanIcon } from "~/components/crests/CardFanIcon";
 
 export function meta() {
   return [{ title: "Login — Tabledeck" }];
@@ -38,44 +40,88 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-4">
-      <h1 className="text-3xl font-bold text-white mb-2">Tabledeck</h1>
-      <p className="text-gray-400 mb-8">Sign in to your account</p>
-      <form
-        onSubmit={handleLogin}
-        className="flex flex-col gap-4 w-full max-w-sm"
-      >
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="bg-gray-800 text-white rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-amber-500"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="bg-gray-800 text-white rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-amber-500"
-        />
-        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-3 transition-colors"
+    <div className="td-surface flex flex-col items-center justify-center p-4">
+      {/* Wordmark above card */}
+      <div className="mb-7 text-center flex flex-col items-center gap-2">
+        <CardFanIcon size={48} />
+        <h1
+          className="font-serif font-semibold"
+          style={{
+            fontSize: "32px",
+            fontStyle: "italic",
+            color: "#e8c872",
+            textShadow: "0 1px 0 rgba(0,0,0,0.5), 0 0 28px rgba(201,162,74,0.2)",
+            letterSpacing: "0.01em",
+          }}
         >
-          {loading ? "Signing in..." : "Sign In"}
-        </button>
-        <p className="text-gray-400 text-sm text-center">
-          No account?{" "}
-          <a href="/signup" className="text-amber-400 hover:underline">
-            Sign up
-          </a>
+          Tabledeck
+        </h1>
+        <p
+          className="font-serif"
+          style={{
+            fontVariant: "small-caps",
+            fontSize: "11.5px",
+            letterSpacing: "0.38em",
+            color: "rgba(244,233,208,0.5)",
+          }}
+        >
+          Log In
         </p>
-      </form>
+      </div>
+
+      {/* Parchment auth card */}
+      <div className="td-auth-card">
+        <form onSubmit={handleLogin} className="flex flex-col gap-5">
+          <div>
+            <label className="td-input-label">Email</label>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="td-input"
+            />
+          </div>
+          <div>
+            <label className="td-input-label">Password</label>
+            <input
+              type="password"
+              placeholder="••••••••"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="td-input"
+            />
+          </div>
+
+          {error && (
+            <p
+              className="font-serif text-sm text-center"
+              style={{ color: "#6b1a21", fontStyle: "italic" }}
+            >
+              {error}
+            </p>
+          )}
+
+          <BtnPrimary type="submit" disabled={loading} fullWidth>
+            {loading ? "Signing in\u2026" : "Sign In"}
+          </BtnPrimary>
+
+          <p
+            className="font-serif text-sm text-center"
+            style={{ fontStyle: "italic", color: "rgba(26,22,18,0.55)" }}
+          >
+            No account?{" "}
+            <a
+              href="/signup"
+              style={{ color: "#8b6a1e", textDecoration: "underline" }}
+            >
+              Sign up
+            </a>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

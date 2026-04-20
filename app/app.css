@@ -13,7 +13,7 @@
   --color-bone-deep: #c0b087;
   --color-ink: #1a1612;
   --color-ink-soft: #3a2f25;
-  --color-ink-faint: rgba(26,22,18,0.55);
+  --color-ink-faint: rgba(26,22,18,0.72);
 
   /* Metals */
   --color-gold: #c9a24a;
@@ -58,7 +58,7 @@
     --bone:           #f6efe0;
     --ink:            #1a1612;
     --ink-soft:       #3a2f25;
-    --ink-faint:      rgba(26,22,18,0.55);
+    --ink-faint:      rgba(26,22,18,0.72);
     --gold:           #c9a24a;
     --gold-hi:        #e8c872;
     --gold-lo:        #8b6a1e;
@@ -206,9 +206,9 @@
     color: var(--ink);
     font-family: var(--serif);
     font-variant: small-caps;
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.22em;
+    font-weight: 700;
+    font-size: 14.5px;
+    letter-spacing: 0.18em;
     cursor: pointer;
     text-decoration: none;
     box-shadow:
@@ -245,9 +245,9 @@
     color: var(--ink);
     font-family: var(--serif);
     font-variant: small-caps;
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.22em;
+    font-weight: 700;
+    font-size: 14.5px;
+    letter-spacing: 0.18em;
     cursor: pointer;
     text-decoration: none;
     box-shadow:
@@ -305,5 +305,71 @@
   .td-card.preview {
     opacity: 0.72;
     cursor: default;
+  }
+
+  /* ── Navy plank table surface ─────────────────────── */
+  .td-surface {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(255, 230, 180, 0.04) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.6) 0%, transparent 70%),
+      repeating-linear-gradient(92deg, #0c1a2e 0px, #0f1d33 2px, #0d1b30 4px, #101e34 6px),
+      #0f1d33;
+  }
+
+  /* ── Auth card surface ────────────────────────────── */
+  .td-auth-card {
+    background: var(--parchment);
+    border-radius: 8px;
+    padding: 32px 28px;
+    box-shadow:
+      inset 0 0 0 1px rgba(26,22,18,0.12),
+      inset 0 0 0 6px var(--parchment),
+      inset 0 0 0 7px rgba(26,22,18,0.08),
+      0 6px 18px rgba(0,0,0,0.45);
+    width: 100%;
+    max-width: 420px;
+  }
+
+  /* ── Input ────────────────────────────────────────── */
+  .td-input {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(26,22,18,0.4);
+    padding: 8px 2px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+  }
+  .td-input:focus {
+    border-bottom-color: var(--gold);
+  }
+  .td-input::placeholder {
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  /* ── Input label ──────────────────────────────────── */
+  .td-input-label {
+    font-family: var(--serif);
+    font-variant: small-caps;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ── Auth gold separator rule ─────────────────────── */
+  .td-gold-rule {
+    border: none;
+    border-top: 1px solid rgba(201,162,74,0.3);
+    margin: 20px 0;
   }
 }
