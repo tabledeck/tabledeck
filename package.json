@@ -6,7 +6,7 @@
     "build": "prisma generate && react-router build",
     "dev": "react-router dev",
     "deploy": "npm run build && wrangler deploy",
-    "d1:migrate": "wrangler d1 migrations apply tabledeck-auth",
+    "d1:migrate": "wrangler d1 migrations apply tabledeck-auth --remote",
     "d1:create-migration": "wrangler d1 migrations create",
     "typecheck": "react-router typegen && tsc"
   },

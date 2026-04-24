@@ -387,7 +387,9 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  FavoriteGame: 'FavoriteGame',
+  SetupPreset: 'SetupPreset'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification"
+    modelProps: "user" | "session" | "account" | "verification" | "favoriteGame" | "setupPreset"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -703,6 +705,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    FavoriteGame: {
+      payload: Prisma.$FavoriteGamePayload<ExtArgs>
+      fields: Prisma.FavoriteGameFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FavoriteGameFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FavoriteGameFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload>
+        }
+        findFirst: {
+          args: Prisma.FavoriteGameFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FavoriteGameFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload>
+        }
+        findMany: {
+          args: Prisma.FavoriteGameFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload>[]
+        }
+        create: {
+          args: Prisma.FavoriteGameCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload>
+        }
+        createMany: {
+          args: Prisma.FavoriteGameCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FavoriteGameCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload>[]
+        }
+        delete: {
+          args: Prisma.FavoriteGameDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload>
+        }
+        update: {
+          args: Prisma.FavoriteGameUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload>
+        }
+        deleteMany: {
+          args: Prisma.FavoriteGameDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FavoriteGameUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FavoriteGameUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload>[]
+        }
+        upsert: {
+          args: Prisma.FavoriteGameUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FavoriteGamePayload>
+        }
+        aggregate: {
+          args: Prisma.FavoriteGameAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFavoriteGame>
+        }
+        groupBy: {
+          args: Prisma.FavoriteGameGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FavoriteGameGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FavoriteGameCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FavoriteGameCountAggregateOutputType> | number
+        }
+      }
+    }
+    SetupPreset: {
+      payload: Prisma.$SetupPresetPayload<ExtArgs>
+      fields: Prisma.SetupPresetFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SetupPresetFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SetupPresetFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload>
+        }
+        findFirst: {
+          args: Prisma.SetupPresetFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SetupPresetFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload>
+        }
+        findMany: {
+          args: Prisma.SetupPresetFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload>[]
+        }
+        create: {
+          args: Prisma.SetupPresetCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload>
+        }
+        createMany: {
+          args: Prisma.SetupPresetCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SetupPresetCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload>[]
+        }
+        delete: {
+          args: Prisma.SetupPresetDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload>
+        }
+        update: {
+          args: Prisma.SetupPresetUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload>
+        }
+        deleteMany: {
+          args: Prisma.SetupPresetDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SetupPresetUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SetupPresetUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload>[]
+        }
+        upsert: {
+          args: Prisma.SetupPresetUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SetupPresetPayload>
+        }
+        aggregate: {
+          args: Prisma.SetupPresetAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSetupPreset>
+        }
+        groupBy: {
+          args: Prisma.SetupPresetGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SetupPresetGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SetupPresetCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SetupPresetCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -800,6 +950,29 @@ export const VerificationScalarFieldEnum = {
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+export const FavoriteGameScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  gameKey: 'gameKey',
+  createdAt: 'createdAt'
+} as const
+
+export type FavoriteGameScalarFieldEnum = (typeof FavoriteGameScalarFieldEnum)[keyof typeof FavoriteGameScalarFieldEnum]
+
+
+export const SetupPresetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  gameKey: 'gameKey',
+  name: 'name',
+  settings: 'settings',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SetupPresetScalarFieldEnum = (typeof SetupPresetScalarFieldEnum)[keyof typeof SetupPresetScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -808,12 +981,36 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const NullsOrder = {
   first: 'first',
   last: 'last'
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 
@@ -847,6 +1044,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -955,6 +1166,8 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
+  favoriteGame?: Prisma.FavoriteGameOmit
+  setupPreset?: Prisma.SetupPresetOmit
 }
 
 /* Types for Logging */

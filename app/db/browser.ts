@@ -37,3 +37,13 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type Verification = Prisma.VerificationModel
+/**
+ * Model FavoriteGame
+ * 
+ */
+export type FavoriteGame = Prisma.FavoriteGameModel
+/**
+ * Model SetupPreset
+ * 
+ */
+export type SetupPreset = Prisma.SetupPresetModel

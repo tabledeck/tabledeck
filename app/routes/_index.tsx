@@ -1,14 +1,16 @@
+import type { ReactNode } from "react";
 import type { Route } from "./+types/_index";
 import { getOptionalUserFromContext } from "~/domain/utils/global-context.server";
 import { BtnPrimary } from "~/components/tabledeck/BtnPrimary";
 import { BtnSecondary } from "~/components/tabledeck/BtnSecondary";
 import { GameCard } from "~/components/tabledeck/GameCard";
-import { SkullKingCrest } from "~/components/crests/SkullKingCrest";
-import { KingsCribbageCrest } from "~/components/crests/KingsCribbageCrest";
-import { BattleshipCrest } from "~/components/crests/BattleshipCrest";
-import { GameOfThingsCrest } from "~/components/crests/GameOfThingsCrest";
-import { ScoreboardCrest } from "~/components/crests/ScoreboardCrest";
 import { CardFanIcon } from "~/components/crests/CardFanIcon";
+import { GameCrest } from "~/components/crests/GameCrest";
+import { getAccountDashboardData } from "~/domain/platform.server";
+import {
+  sortGamesForUser,
+  type UserTableSummary,
+} from "~/domain/platform-shared";
 
 export function meta() {
   return [
@@ -31,58 +33,115 @@ export const links: Route.LinksFunction = () => [
 
 export async function loader({ context }: Route.LoaderArgs) {
   const user = getOptionalUserFromContext(context);
-  return { user: user ? { name: user.name, email: user.email } : null };
+  if (!user) {
+    return {
+      user: null,
+      favoriteGames: [],
+      favoriteGameKeys: [],
+      activeTables: [],
+      recentTables: [],
+    };
+  }
+
+  const dashboard = await getAccountDashboardData(context, user.id);
+  return {
+    user: { id: user.id, name: user.name, email: user.email },
+    ...dashboard,
+  };
 }
 
-const GAMES = [
-  {
-    id: "skull-king",
-    title: "Skull King",
-    description: "Real-time trick-taking for 2–8 players",
-    href: "https://skull.tabledeck.us",
-    live: true,
-  },
-  {
-    id: "kings-cribbage",
-    title: "King's Cribbage",
-    description: "Classic cribbage, played online with friends",
-    href: "https://kingscrib.tabledeck.us",
-    live: true,
-  },
-  {
-    id: "battleship",
-    title: "Battleship",
-    description: "Naval strategy — sink the fleet before they sink yours",
-    href: "https://battleship.tabledeck.us",
-    live: true,
-  },
-  {
-    id: "game-of-things",
-    title: "Game of Things",
-    description: "The party game of outrageous answers",
-    href: "https://things.tabledeck.us",
-    live: true,
-  },
-  {
-    id: "scoreboard",
-    title: "Scoreboard",
-    description: "Live scores for any game — hearts, golf, anything with rounds",
-    href: "https://score.tabledeck.us",
-    live: true,
-  },
-] as const;
+function DashboardPanel({
+  title,
+  eyebrow,
+  children,
+}: {
+  title: string;
+  eyebrow: string;
+  children: ReactNode;
+}) {
+  return (
+    <section
+      className="t-paper"
+      style={{
+        backgroundColor: "rgba(244,233,208,0.96)",
+        borderRadius: 10,
+        border: "1px solid rgba(200,185,143,0.6)",
+        boxShadow: "0 10px 22px rgba(0,0,0,0.24)",
+        padding: "18px 18px 16px",
+      }}
+    >
+      <p
+        className="font-serif"
+        style={{
+          fontVariant: "small-caps",
+          fontSize: "11px",
+          letterSpacing: "0.26em",
+          color: "rgba(26,22,18,0.48)",
+          marginBottom: 6,
+        }}
+      >
+        {eyebrow}
+      </p>
+      <h2
+        className="font-serif font-semibold"
+        style={{
+          fontSize: "22px",
+          fontStyle: "italic",
+          color: "#1a1612",
+          marginBottom: 14,
+        }}
+      >
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
 
-function GameCrest({ id, size }: { id: string; size: number }) {
-  if (id === "skull-king") return <SkullKingCrest size={size} />;
-  if (id === "kings-cribbage") return <KingsCribbageCrest size={size} />;
-  if (id === "battleship") return <BattleshipCrest size={size} />;
-  if (id === "game-of-things") return <GameOfThingsCrest size={size} />;
-  if (id === "scoreboard") return <ScoreboardCrest size={size} />;
-  return null;
+function TableLink({ table }: { table: UserTableSummary }) {
+  return (
+    <a
+      href={table.tableHref}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        padding: "11px 12px",
+        borderRadius: 8,
+        border: "1px solid rgba(26,22,18,0.1)",
+        background: "rgba(255,255,255,0.3)",
+        textDecoration: "none",
+      }}
+    >
+      <GameCrest id={table.gameKey} size={28} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p
+          className="font-serif font-semibold"
+          style={{ fontSize: "15px", color: "#1a1612", fontStyle: "italic" }}
+        >
+          {table.gameTitle}
+        </p>
+        <p
+          className="font-sans"
+          style={{ fontSize: "11.5px", color: "rgba(26,22,18,0.6)" }}
+        >
+          {table.statusLabel} · {table.seatLabel} · {table.activityLabel}
+        </p>
+      </div>
+      <span
+        className="font-sans"
+        style={{ fontSize: "11px", color: "#8b6a1e", flexShrink: 0 }}
+      >
+        {table.canRejoin ? "Rejoin ->" : "View ->"}
+      </span>
+    </a>
+  );
 }
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-  const { user } = loaderData;
+  const { user, favoriteGames, favoriteGameKeys, activeTables, recentTables } =
+    loaderData;
+  const games = sortGamesForUser(favoriteGameKeys);
 
   return (
     <div
@@ -210,10 +269,79 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         </p>
       </section>
 
-      {/* ── Game gallery ── */}
+      {/* ── Account layer ── */}
       <main className="flex-1 flex flex-col items-center px-4 pb-16">
+        {user && (
+          <div className="w-full max-w-6xl mb-8 grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <DashboardPanel
+              eyebrow="Pick Up Where You Left Off"
+              title="Active Tables"
+            >
+              <div className="flex flex-col gap-2">
+                {activeTables.length > 0 ? (
+                  activeTables.map((table) => (
+                    <TableLink key={`${table.gameKey}-${table.tableId}`} table={table} />
+                  ))
+                ) : (
+                  <p
+                    className="font-sans"
+                    style={{ fontSize: "13px", color: "rgba(26,22,18,0.64)" }}
+                  >
+                    Your live tables will show up here once you join a game.
+                  </p>
+                )}
+              </div>
+            </DashboardPanel>
+
+            <DashboardPanel eyebrow="Your Shelf" title="Favorite Games">
+              {favoriteGames.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {favoriteGames.map((game) => (
+                    <a
+                      key={game.id}
+                      href={game.href}
+                      className="td-btn-secondary"
+                      style={{ fontSize: "11px", padding: "8px 14px" }}
+                    >
+                      {game.title}
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <p
+                    className="font-sans"
+                    style={{ fontSize: "13px", color: "rgba(26,22,18,0.64)" }}
+                  >
+                    Mark favorites from your profile and they will stay pinned at the top of your deck.
+                  </p>
+                  <BtnSecondary href="/profile">Manage Favorites</BtnSecondary>
+                </div>
+              )}
+            </DashboardPanel>
+
+            <DashboardPanel eyebrow="Recent Play" title="Recently Played">
+              <div className="flex flex-col gap-2">
+                {recentTables.length > 0 ? (
+                  recentTables.slice(0, 4).map((table) => (
+                    <TableLink key={`${table.gameKey}-${table.tableId}`} table={table} />
+                  ))
+                ) : (
+                  <p
+                    className="font-sans"
+                    style={{ fontSize: "13px", color: "rgba(26,22,18,0.64)" }}
+                  >
+                    Once you sit at a Tabledeck game, your recent tables will be waiting here for a quick return.
+                  </p>
+                )}
+              </div>
+            </DashboardPanel>
+          </div>
+        )}
+
+        {/* ── Game gallery ── */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 w-full max-w-6xl">
-          {GAMES.map((game) => (
+          {games.map((game) => (
             <GameCard
               key={game.id}
               live={game.live}

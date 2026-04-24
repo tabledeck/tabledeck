@@ -25,6 +25,31 @@
       "database_name": "tabledeck-auth",
       "database_id": "9e3645c4-fc3f-44df-8477-64a47d0637de",
       "migrations_dir": "migrations"
+    },
+    {
+      "binding": "SKULL_KING_DB",
+      "database_name": "skull-king",
+      "database_id": "016c24ff-4109-42f0-b77e-548107998b72"
+    },
+    {
+      "binding": "BATTLESHIP_DB",
+      "database_name": "battleship",
+      "database_id": "1f60c2e9-1c96-43a5-9098-2e89b96d28c5"
+    },
+    {
+      "binding": "KINGS_CRIBBAGE_DB",
+      "database_name": "kings-cribbage",
+      "database_id": "2246b51d-acac-4d1d-a45d-050f0099c33f"
+    },
+    {
+      "binding": "SCOREBOARD_DB",
+      "database_name": "scoreboard",
+      "database_id": "f48dd623-94ec-46f0-a39a-5b42f3bca987"
+    },
+    {
+      "binding": "GAME_OF_THINGS_DB",
+      "database_name": "game-of-things",
+      "database_id": "6aaa2b64-422a-409d-a536-dcdaf9b83094"
     }
   ]
 }

@@ -7,6 +7,8 @@ export default [
 
   // Auth routes
   route("api/auth/*", "routes/api/auth.ts"),
+  route("api/account/favorites", "routes/api/account.favorites.ts"),
+  route("api/account/setup-presets", "routes/api/account.setup-presets.ts"),
   route("login", "routes/auth/login.tsx"),
   route("signup", "routes/auth/signup.tsx"),
   route("logout", "routes/auth/logout.ts"),
