@@ -19,6 +19,9 @@
   "vars": {
     "ENVIRONMENT": "production"
   },
+  // Secret, set with: npx wrangler secret put STATS_API_TOKEN
+  // Authorizes GET https://tabledeck.us/api/stats/weekly
+
   "d1_databases": [
     {
       "binding": "D1_DATABASE",

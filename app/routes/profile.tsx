@@ -10,7 +10,10 @@ import { getAccountDashboardData } from "~/domain/platform.server";
 import type { UserTableSummary } from "~/domain/platform-shared";
 
 export function meta() {
-  return [{ title: "Profile — Tabledeck" }];
+  return [
+    { title: "Profile — Tabledeck" },
+    { name: "robots", content: "noindex,nofollow" },
+  ];
 }
 
 export async function loader({ context }: Route.LoaderArgs) {

@@ -12,6 +12,8 @@ declare global {
     GAME_OF_THINGS_DB?: D1Database;
     ENVIRONMENT: string;
     BETTER_AUTH_SECRET: string;
+    /** Worker secret. Authorizes GET /api/stats/weekly. */
+    STATS_API_TOKEN?: string;
   }
 }
 

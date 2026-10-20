@@ -1,35 +1,28 @@
 import type { ReactNode } from "react";
 import type { Route } from "./+types/_index";
 import { getOptionalUserFromContext } from "~/domain/utils/global-context.server";
-import { BtnPrimary } from "~/components/tabledeck/BtnPrimary";
 import { BtnSecondary } from "~/components/tabledeck/BtnSecondary";
 import { GameCard } from "~/components/tabledeck/GameCard";
+import { SiteChrome } from "~/components/tabledeck/SiteChrome";
 import { CardFanIcon } from "~/components/crests/CardFanIcon";
 import { GameCrest } from "~/components/crests/GameCrest";
+import { JsonLd } from "~/components/seo/JsonLd";
 import { getAccountDashboardData } from "~/domain/platform.server";
+import { gameHowToPath, gameLandingPath } from "~/domain/game-pages";
+import {
+  gamesItemListJsonLd,
+  homeSeo,
+  pageMeta,
+  websiteJsonLd,
+} from "~/domain/seo";
 import {
   sortGamesForUser,
   type UserTableSummary,
 } from "~/domain/platform-shared";
 
 export function meta() {
-  return [
-    { title: "Tabledeck — Play Board Games Online with Friends" },
-    { name: "description", content: "Free online tabletop games — play Skull King, King's Cribbage, Battleship, Game of Things, and more with friends from anywhere. No download required." },
-    { property: "og:type", content: "website" },
-    { property: "og:site_name", content: "Tabledeck" },
-    { property: "og:title", content: "Tabledeck — Play Board Games Online with Friends" },
-    { property: "og:description", content: "Free online tabletop games — play Skull King, King's Cribbage, Battleship, Game of Things, and more with friends from anywhere. No download required." },
-    { property: "og:url", content: "https://tabledeck.us" },
-    { name: "twitter:card", content: "summary" },
-    { name: "twitter:title", content: "Tabledeck — Play Board Games Online with Friends" },
-    { name: "twitter:description", content: "Free online tabletop games — play Skull King, King's Cribbage, and more with friends." },
-  ];
+  return pageMeta(homeSeo());
 }
-
-export const links: Route.LinksFunction = () => [
-  { rel: "canonical", href: "https://tabledeck.us" },
-];
 
 export async function loader({ context }: Route.LoaderArgs) {
   const user = getOptionalUserFromContext(context);
@@ -144,84 +137,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
   const games = sortGamesForUser(favoriteGameKeys);
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{
-        background: `
-          radial-gradient(ellipse at 50% 30%, rgba(255, 230, 180, 0.04) 0%, transparent 55%),
-          radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.6) 0%, transparent 70%),
-          repeating-linear-gradient(92deg, #0c1a2e 0px, #0f1d33 2px, #0d1b30 4px, #101e34 6px),
-          #0f1d33
-        `,
-      }}
-    >
-      {/* ── Header ── */}
-      <header className="flex items-center justify-between px-6 pt-5 pb-2 max-w-6xl mx-auto w-full">
-        {/* Wordmark */}
-        <div className="flex items-center gap-3">
-          <CardFanIcon size={36} />
-          <span
-            className="font-serif font-semibold italic leading-none"
-            style={{
-              fontSize: "22px",
-              color: "#e8c872",
-              textShadow: "0 1px 0 rgba(0,0,0,0.5), 0 0 18px rgba(201,162,74,0.2)",
-              letterSpacing: "0.01em",
-            }}
-          >
-            Tabledeck
-          </span>
-        </div>
-
-        {/* Auth links */}
-        <nav className="flex items-center gap-3">
-          {user ? (
-            <>
-              <a
-                href="/profile"
-                className="font-serif text-sm"
-                style={{
-                  fontVariant: "small-caps",
-                  letterSpacing: "0.18em",
-                  color: "rgba(244,233,208,0.75)",
-                  textDecoration: "none",
-                }}
-              >
-                {user.name || user.email}
-              </a>
-              <a
-                href="/logout"
-                className="font-serif text-sm"
-                style={{
-                  fontVariant: "small-caps",
-                  letterSpacing: "0.18em",
-                  color: "rgba(244,233,208,0.45)",
-                  textDecoration: "none",
-                }}
-              >
-                Logout
-              </a>
-            </>
-          ) : (
-            <>
-              <a
-                href="/login"
-                className="font-serif text-sm"
-                style={{
-                  fontVariant: "small-caps",
-                  letterSpacing: "0.18em",
-                  color: "rgba(244,233,208,0.7)",
-                  textDecoration: "none",
-                }}
-              >
-                Login
-              </a>
-              <BtnPrimary href="/signup">Sign up</BtnPrimary>
-            </>
-          )}
-        </nav>
-      </header>
-
+    <SiteChrome user={user}>
       {/* ── Hero ── */}
       <section className="flex flex-col items-center justify-center text-center py-16 px-4">
         <div className="mb-5">
@@ -267,10 +183,27 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         >
           pull up a chair.
         </p>
+        <p
+          className="font-sans mt-6 max-w-xl"
+          style={{
+            fontSize: "16px",
+            lineHeight: 1.6,
+            color: "rgba(244,233,208,0.72)",
+          }}
+        >
+          Tabledeck is a free place to play board and card games online with friends.
+          Open a table for{" "}
+          <a href="/games/skull-king" style={{ color: "#e8c872" }}>Skull King</a>,{" "}
+          <a href="/games/kings-cribbage" style={{ color: "#e8c872" }}>King&apos;s Cribbage</a>,{" "}
+          <a href="/games/battleship" style={{ color: "#e8c872" }}>Battleship</a>,{" "}
+          <a href="/games/game-of-things" style={{ color: "#e8c872" }}>The Game of Things</a>, or a{" "}
+          <a href="/games/scoreboard" style={{ color: "#e8c872" }}>shared scoreboard</a>
+          , send the link, and sit down in the browser. No download.
+        </p>
       </section>
 
       {/* ── Account layer ── */}
-      <main className="flex-1 flex flex-col items-center px-4 pb-16">
+      <main id="content" className="flex-1 flex flex-col items-center px-4 pb-16">
         {user && (
           <div className="w-full max-w-6xl mb-8 grid grid-cols-1 lg:grid-cols-3 gap-4">
             <DashboardPanel
@@ -340,105 +273,67 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         )}
 
         {/* ── Game gallery ── */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 w-full max-w-6xl">
-          {games.map((game) => (
-            <GameCard
-              key={game.id}
-              live={game.live}
-              href={game.href}
-            >
-              {/* Card face */}
-              <div className="flex flex-col items-center p-6 gap-4">
-                {/* Crest */}
-                <div
-                  className="flex items-center justify-center"
-                  style={{ minHeight: "72px" }}
-                >
-                  <GameCrest id={game.id} size={64} />
+        <section aria-labelledby="games-heading" className="w-full max-w-6xl">
+          <h2
+            id="games-heading"
+            className="font-serif text-center mb-5"
+            style={{
+              fontVariant: "small-caps",
+              letterSpacing: "0.28em",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "rgba(244,233,208,0.55)",
+            }}
+          >
+            Play online with friends
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+            {games.map((game) => (
+              <GameCard key={game.id} live={game.live}>
+                <div className="flex flex-col items-center p-6 gap-4 h-full">
+                  <div
+                    className="flex items-center justify-center"
+                    style={{ minHeight: "72px" }}
+                  >
+                    <GameCrest id={game.id} size={64} />
+                  </div>
+                  <h3
+                    className="font-serif font-semibold italic text-center leading-tight"
+                    style={{
+                      fontSize: "22px",
+                      color: "#1a1612",
+                      letterSpacing: "0.01em",
+                    }}
+                  >
+                    <a href={gameLandingPath(game.id)} style={{ color: "#1a1612", textDecoration: "none" }}>
+                      {game.title}
+                    </a>
+                  </h3>
+                  <p
+                    className="font-sans text-center leading-snug"
+                    style={{
+                      fontSize: "12.5px",
+                      color: "rgba(26,22,18,0.65)",
+                    }}
+                  >
+                    {game.description}
+                  </p>
+                  <div className="mt-auto pt-2 flex flex-col items-center gap-2">
+                    <a href={game.href} className="td-btn-primary" style={{ fontSize: "11.5px", padding: "7px 16px" }}>
+                      Play
+                    </a>
+                    <a href={gameHowToPath(game.id)} className="font-sans" style={{ fontSize: "12px", color: "#8b6a1e" }}>
+                      How to play
+                    </a>
+                  </div>
                 </div>
-
-                {/* Title */}
-                <h2
-                  className="font-serif font-semibold italic text-center leading-tight"
-                  style={{
-                    fontSize: "22px",
-                    color: "#1a1612",
-                    letterSpacing: "0.01em",
-                  }}
-                >
-                  {game.title}
-                </h2>
-
-                {/* Description */}
-                <p
-                  className="font-sans text-center leading-snug"
-                  style={{
-                    fontSize: "12.5px",
-                    color: "rgba(26,22,18,0.65)",
-                  }}
-                >
-                  {game.description}
-                </p>
-
-                {/* CTA chip */}
-                <div className="mt-auto pt-2">
-                  {game.live ? (
-                    <span className="td-btn-primary" style={{ fontSize: "11.5px", padding: "7px 16px" }}>
-                      Play &rarr;
-                    </span>
-                  ) : (
-                    <span className="td-btn-secondary" style={{ fontSize: "11px", padding: "7px 14px", opacity: 0.7 }}>
-                      Coming soon
-                    </span>
-                  )}
-                </div>
-              </div>
-            </GameCard>
-          ))}
-        </div>
+              </GameCard>
+            ))}
+          </div>
+        </section>
       </main>
-
-      {/* ── Footer ── */}
-      <footer
-        className="text-center py-5 px-4"
-        style={{ borderTop: "1px solid rgba(201,162,74,0.12)" }}
-      >
-        {/* rivet ornament */}
-        <div className="flex items-center justify-center gap-3 mb-3">
-          {[0, 1, 2, 3, 4].map((i) => (
-            <svg key={i} width="6" height="6" viewBox="0 0 6 6" aria-hidden="true">
-              <circle cx="3" cy="3" r="2.5" fill="none" stroke="rgba(201,162,74,0.3)" strokeWidth="0.8" />
-              <circle cx="3" cy="3" r="1" fill="rgba(201,162,74,0.25)" />
-            </svg>
-          ))}
-        </div>
-
-        <p
-          className="font-serif"
-          style={{
-            fontVariant: "small-caps",
-            fontSize: "11px",
-            letterSpacing: "0.3em",
-            color: "rgba(244,233,208,0.35)",
-          }}
-        >
-          Tabledeck &middot; 2026 &middot; Made for the Table
-        </p>
-      </footer>
-
-      {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "Tabledeck",
-            url: "https://tabledeck.us",
-            description: "Free online tabletop games — play Skull King, King's Cribbage, Battleship, Game of Things, and more with friends from anywhere.",
-          }),
-        }}
-      />
-    </div>
+      <JsonLd data={websiteJsonLd()} />
+      <JsonLd data={gamesItemListJsonLd()} />
+    </SiteChrome>
   );
 }

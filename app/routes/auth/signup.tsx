@@ -7,7 +7,10 @@ import { BtnPrimary } from "~/components/tabledeck/BtnPrimary";
 import { CardFanIcon } from "~/components/crests/CardFanIcon";
 
 export function meta() {
-  return [{ title: "Sign Up — Tabledeck" }];
+  return [
+    { title: "Sign Up — Tabledeck" },
+    { name: "robots", content: "noindex,nofollow" },
+  ];
 }
 
 export async function loader({ context }: Route.LoaderArgs) {
