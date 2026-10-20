@@ -10,6 +10,7 @@ export function GameOfThingsCrest({ size = 48, className = "" }: GameOfThingsCre
       width={size}
       height={size}
       className={className}
+      role="img"
       aria-label="Game of Things"
     >
       {/* rubber-stamp circle — speakeasy coaster style */}

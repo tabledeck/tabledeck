@@ -10,6 +10,7 @@ export function SkullKingCrest({ size = 48, className = "" }: SkullKingCrestProp
       width={size}
       height={size}
       className={className}
+      role="img"
       aria-label="Skull King"
     >
       <defs>

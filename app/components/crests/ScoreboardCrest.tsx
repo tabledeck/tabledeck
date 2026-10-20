@@ -10,6 +10,7 @@ export function ScoreboardCrest({ size = 48, className = "" }: ScoreboardCrestPr
       width={size}
       height={size}
       className={className}
+      role="img"
       aria-label="Scoreboard"
     >
       <defs>

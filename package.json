@@ -8,7 +8,8 @@
     "deploy": "npm run build && wrangler deploy",
     "d1:migrate": "wrangler d1 migrations apply tabledeck-auth --remote",
     "d1:create-migration": "wrangler d1 migrations create",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc",
+    "check": "node --experimental-strip-types --experimental-sqlite --import ./scripts/resolve-ts.mjs scripts/check-growth.ts"
   },
   "dependencies": {
     "@heroui/react": "^3.0.1",

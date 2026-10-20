@@ -10,6 +10,7 @@ export function BattleshipCrest({ size = 48, className = "" }: BattleshipCrestPr
       width={size}
       height={size}
       className={className}
+      role="img"
       aria-label="Battleship"
     >
       {/* Battleship silhouette — inked navy on cream, Hasbro-profile style */}

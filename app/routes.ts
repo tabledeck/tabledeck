@@ -2,8 +2,12 @@ import { index, route, type RouteConfig } from "@react-router/dev/routes";
 
 export default [
   index("routes/_index.tsx"),
+  route("games", "routes/games.tsx"),
+  route("games/:gameKey", "routes/games.$gameKey.tsx"),
+  route("games/:gameKey/how-to-play", "routes/games.$gameKey.how-to-play.tsx"),
   route("robots.txt", "routes/robots[.]txt.ts"),
   route("sitemap.xml", "routes/sitemap[.]xml.ts"),
+  route("api/stats/weekly", "routes/api/stats.weekly.ts"),
 
   // Auth routes
   route("api/auth/*", "routes/api/auth.ts"),

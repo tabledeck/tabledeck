@@ -10,6 +10,7 @@ export function KingsCribbageCrest({ size = 48, className = "" }: KingsCribbageC
       width={size}
       height={size}
       className={className}
+      role="img"
       aria-label="King's Cribbage"
     >
       <defs>
